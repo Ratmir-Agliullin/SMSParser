@@ -13,8 +13,44 @@ public class Parser {
     private static String link;
 
     public static void main(String[] args) {
-        System.out.println(SmsActivate());
+   //       SmsActivate();
+     SimSMS();
     }
+
+    public static String SimSMS(){
+        String result=null;
+        link="http://simsms.org/";
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(link).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int i=0;
+      //  while (true) {
+
+          //  try {
+                Element element = doc.select("div.list-body").get(0);
+            Element li = element.getElementsByClass("li.row.list-item").get(0);
+            String image = "http://simsms.org"+li.getElementsByTag("img").get(0).attr("src");
+        //    Element div = element.getElementsByClass("col-xs-20").get(0);
+//                Element label = td.getElementsByTag("label").first();
+//                String name = label.getElementsByTag("span").first().text();
+//                String count = label.getElementsByTag("span").get(1).text();
+//                String price = element.getElementsByTag("td").get(2).text();
+//                i++;
+            //    System.out.println(name.substring(5)+" "+count.substring(0,count.length()-2)+" "+price);
+                System.out.println(image);
+         //   } catch (IndexOutOfBoundsException e){
+              //  break;
+          //  }
+     //   }
+
+        return " ";//name.substring(5)+" "+count.substring(0,count.length()-2)+" "+price;
+    }
+
+
+
 
     public static String SmsActivate(){
         String result=null;
@@ -32,11 +68,12 @@ while (true) {
                 Element element = doc.select("tr.tabbed.cell").get(i);
                 Element td = element.getElementsByTag("td").get(1);
                 Element label = td.getElementsByTag("label").first();
+                String image = "http://sms-activate.ru"+label.getElementsByTag("img").get(0).attr("src");
                 String name = label.getElementsByTag("span").first().text();
                 String count = label.getElementsByTag("span").get(1).text();
                 String price = element.getElementsByTag("td").get(2).text();
                 i++;
-                System.out.println(name.substring(5)+" "+count.substring(0,count.length()-2)+" "+price);
+                System.out.println(image+" "+name.substring(5)+" "+count.substring(0,count.length()-2)+" "+price);
             } catch (IndexOutOfBoundsException e){
                 break;
             }
