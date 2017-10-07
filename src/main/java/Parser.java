@@ -1,6 +1,13 @@
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,14 +26,14 @@ public class Parser {
 
     public static void main(String[] args) {
    //       SmsActivate();
- //  SimSMS();
-  //      SmsVK();
-     //   SmsLike();
         try {
-            getPage();
+            SimSMS();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //      SmsVK();
+     //   SmsLike();
+
     }
 
 
@@ -100,7 +107,7 @@ public class Parser {
 
 
 
-    public static String SimSMS(){
+    public static String SimSMS() throws IOException {
         String result=null;
         link="http://simsms.org/";
         Document doc = null;
@@ -110,15 +117,14 @@ public class Parser {
             e.printStackTrace();
         }
         int i=0;
-
-//                Element element = doc.select("section.main-section").get(0);
-//            Element ul = element.getElementsByTag("ul").get(0);
-        Element ul = doc.select("section").get(0);
-//            String image = "http://simsms.org"+li.getElementsByTag("img").get(0).attr("src");
-
-                System.out.println(ul.toString());
-
-
+//        WebDriver driver = new FirefoxDriver();
+//
+//        driver.get(link);
+//        WebElement element = driver.findElement(By.className("list-body"));
+//        System.out.println(element.toString());
+        WebClient webClient = new WebClient();
+        HtmlPage page = webClient.getPage(link);
+        System.out.println(page.getBody().toString());
         return " ";
     }
 
