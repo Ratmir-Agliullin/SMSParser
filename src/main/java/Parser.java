@@ -14,8 +14,43 @@ public class Parser {
 
     public static void main(String[] args) {
    //       SmsActivate();
-     SimSMS();
+    // SimSMS();
+        SmsVK();
     }
+
+
+    public static String SmsVK(){
+        String result=null;
+        link="http://smsvk.net/";
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(link).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int i=0;
+        Element element = doc.select("div.vsep").get(0);
+        while (true) {
+
+            try {
+
+              Element tr = element.getElementsByTag("tr").get(i);
+              String name  = tr.getElementsByTag("td").get(0).text();
+              String image = "http://smsvk.net"+tr.getElementsByTag("td").get(0).getElementsByTag("img").attr("src");
+        String count = tr.getElementsByTag("td").get(1).text();
+        String price = tr.getElementsByTag("td").get(2).text();
+                i++;
+        System.out.println(image+" "+name+" "+count+" "+price);
+            } catch (IndexOutOfBoundsException e){
+                break;
+            }
+        }
+
+        return " ";//name.substring(5)+" "+count.substring(0,count.length()-2)+" "+price;
+    }
+
+
+
 
     public static String SimSMS(){
         String result=null;
