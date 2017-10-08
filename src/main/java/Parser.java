@@ -1,5 +1,7 @@
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,9 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -23,17 +23,18 @@ import java.util.regex.Pattern;
  */
 public class Parser {
     private static String link;
+    public static JSONObject globalJSON=new JSONObject();
 
     public static void main(String[] args) {
-   //       SmsActivate();
+     SmsActivate();
+      SmsVK();
+     SmsLike();
         try {
-            SimSMS();
+            Service.writeStringInFile(globalJSON.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //      SmsVK();
-     //   SmsLike();
-
+        System.out.println(globalJSON.toString());
     }
 
 
@@ -50,6 +51,8 @@ public class Parser {
         }
         int i=0;
         Element element = doc.select("div.pt-15").get(0);
+        JSONObject SmsLikeJSON = new JSONObject();
+        JSONObject SmsLikeJSON2 = new JSONObject();
         while (true) {
 
             try {
@@ -59,14 +62,18 @@ public class Parser {
                 String count = tr.getElementsByTag("td").get(0).getElementsByTag("span").get(1).text();
                String price = tr.getElementsByTag("td").get(0).getElementsByTag("div").get(0).text().split(" ")[1]+"р.";
                 i++;
+                JSONObject SiteJSON = new JSONObject();
+                SiteJSON.put("count",count);
+                SiteJSON.put("price",price);
+                SmsLikeJSON2.put(name,SiteJSON);
 
-        System.out.println(image+" "+name+" "+count+" "+price);
 
             } catch (IndexOutOfBoundsException e){
                 break;
             }
         }
-
+        globalJSON.put("SmsLike",SmsLikeJSON2);
+    //    System.out.println(SmsLikeJSON.toString());
         return " ";
     }
 
@@ -84,6 +91,7 @@ public class Parser {
         }
         int i=0;
         Element element = doc.select("div.vsep").get(0);
+        JSONObject siteJSON = new JSONObject();
         while (true) {
 
             try {
@@ -95,12 +103,16 @@ public class Parser {
         String count = countBuf.substring(0,countBuf.length()-2);
         String price = tr.getElementsByTag("td").get(2).text();
                 i++;
-        System.out.println(image+" "+name+" "+count+" "+price);
+    //    System.out.println(image+" "+name+" "+count+" "+price);
+                JSONObject SiteJSON = new JSONObject();
+                SiteJSON.put("count",count);
+                SiteJSON.put("price",price);
+                siteJSON.put(name,SiteJSON);
             } catch (IndexOutOfBoundsException e){
                 break;
             }
         }
-
+        globalJSON.put("smsvk",siteJSON);
         return " ";//name.substring(5)+" "+count.substring(0,count.length()-2)+" "+price;
     }
 
@@ -141,6 +153,7 @@ public class Parser {
             e.printStackTrace();
         }
         int i=0;
+        JSONObject siteJSON = new JSONObject();
 while (true) {
 
             try {
@@ -152,11 +165,16 @@ while (true) {
                 String count = label.getElementsByTag("span").get(1).text();
                 String price = element.getElementsByTag("td").get(2).text();
                 i++;
-                System.out.println(image+" "+name.substring(5)+" "+count.substring(0,count.length()-2)+" "+price);
+             //   System.out.println(image+" "+name.substring(5)+" "+count.substring(0,count.length()-2)+" "+price);
+                JSONObject SiteJSON = new JSONObject();
+                SiteJSON.put("count",count);
+                SiteJSON.put("price",price);
+                siteJSON.put(name.substring(5),SiteJSON);
             } catch (IndexOutOfBoundsException e){
                 break;
             }
 }
+        globalJSON.put("sms-activate",siteJSON);
         return " ";//name.substring(5)+" "+count.substring(0,count.length()-2)+" "+price;
     }
 
@@ -191,4 +209,6 @@ while (true) {
 
         System.out.println(response.toString());
     }
+
+
 }
