@@ -8,7 +8,7 @@ import java.io.IOException;
 public class Service {
     public static void writeStringInFile(String in) throws IOException {
 
-        BufferedWriter myfile = new BufferedWriter(new FileWriter("src/main/java/buffer.dat"));
+        BufferedWriter myfile = new BufferedWriter(new FileWriter("src/main/java/buffer.json"));
         myfile.write(in);
         myfile.close();
     }
